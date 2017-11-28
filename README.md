@@ -29,11 +29,10 @@ En la pestaña de **Módulos instalados** presione el botón **CONFIGURE**
 
 Llena los datos que se solicitan y presione el botón **Guardar**
 
-* **ApiKey:** ApiKey asignada en el panel de administración de Paycores
-* **ApiLogin:** ApiLogin asignado en el panel de administración de Paycores
+* **Api Key:** ApiKey asignada en el panel de administración de Paycores
+* **Api Login:** ApiLogin asignado en el panel de administración de Paycores
 * **CommerceID:** CommerceID asignado en el panel de administración de Paycores
 * **Modo de prueba:** Activa las transacciones de prueba de Paycores
-
 
 Felicitaciones ha integrado pagos a través de Paycores en su página web.
 
