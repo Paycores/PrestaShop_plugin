@@ -13,17 +13,14 @@ Se debe de [descargar](https://codeload.github.com/Paycores/PrestaShop_plugin/zi
 Instalación en PrestaShop: para instalar el plugin PrestaShop debes
 
 **Descomprimir:** el archivo descargado
-![alt text](https://raw.githubusercontent.com/paycores/steps/master/Opencart/step_1.png)
 
 **Comprimir:** la carpeta **Paycores** en formato (.zip).
-![alt text](https://raw.githubusercontent.com/paycores/steps/master/Opencart/step_1.png)
 
 **Cargar el plugin:** desde el panel de administración de PrestaShop en 
 el menú de **MEJORAS** dar clic en **Módulos**. 
 ![alt text](https://raw.githubusercontent.com/paycores/steps/master/PrestaShop/step_1.png)
 
 Presionar el botón **SUBIR UN MÓDULO**
-
 ![alt text](https://raw.githubusercontent.com/paycores/steps/master/PrestaShop/step_2.png)
 
 arrastrar o seleccionar el archivo que acabamos 
