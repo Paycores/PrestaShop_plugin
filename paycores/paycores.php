@@ -14,11 +14,12 @@ class Paycores extends PaymentModule {
     public function __construct() {
         $this->name = 'paycores';
         $this->tab = 'payments_gateways';
-        $this->version = PAYCORES_VERSION;
+        $this->version = "1.0.1";
         $this->author = 'Paycores.com';
         $this->is_eu_compatible = 1;
         $this->controllers = array('redirect', 'callback');
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+        $this->module_key = '2236ed0f211e912556ab8601fea331f6';
 
         $this->currencies = true;
         $this->currencies_mode = 'checkbox';
