@@ -1,8 +1,11 @@
 {*
- * Created by Paycores.com.
- * User: paycores-02
- * Date: 15/11/17
- * Time: 09:59 AM
+ * Paycores
+ *
+ * @author    Paycores
+ * @copyright Copyright (c) 2017 Paycores
+ * @license   http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+ *
+ * https://paycores.com
  *}
 
 {extends file=$layout}
@@ -15,7 +18,7 @@
   <div class="clearfix"></div>
   <br>
 
-  <form action="{$paycoresUrl}" method="post" class="form-horizontal">
+  <form action="{$paycoresUrl|escape:'htmlall':'UTF-8'}" method="post" class="form-horizontal">
     {foreach $paycores_args as $key => $value}
       {if empty($birthday) && $key == 'paycores_usr_birth'}
         <div class="col-sm-12">
@@ -23,7 +26,7 @@
           <input type="text" class="form-control" name="paycores_usr_birth" id="paycores_usr_birth" placeholder="1980-01-20" required>
         </div>
       {/if}
-      <input type="hidden" name="{$key}" value="{$value}" />
+      <input type="hidden" name="{$key|escape:'htmlall':'UTF-8'}" value="{$value|escape:'htmlall':'UTF-8'}" />
     {/foreach}
 
     <div class="clearfix"></div>
@@ -31,7 +34,7 @@
 
     <div class="col-sm-12">
       <label for="paycores_usr_numberId">{l s='Identification number' mod='paycores'}</label>
-      <input type="text" class="form-control" name="paycores_usr_numberId" id="paycores_usr_numberId" placeholder="{l s='1094000000'}" required>
+      <input type="text" class="form-control" name="paycores_usr_numberId" id="paycores_usr_numberId" placeholder="1094000000" required>
     </div>
 
     <div class="clearfix"></div>

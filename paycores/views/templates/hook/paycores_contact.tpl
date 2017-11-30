@@ -1,8 +1,11 @@
 {*
- * Created by Paycores.com.
- * User: paycores-02
- * Date: 15/11/17
- * Time: 09:59 AM
+ * Paycores
+ *
+ * @author    Paycores
+ * @copyright Copyright (c) 2017 Paycores
+ * @license   http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+ *
+ * https://paycores.com
  *}
 
 <div class="alert alert-info">

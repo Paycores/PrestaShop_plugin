@@ -1,17 +1,22 @@
 <?php
 /**
- * Created by Paycores.com.
- * User: paycores-02
- * Date: 15/11/17
- * Time: 09:34 AM
+ * Paycores
+ *
+ * @author    Paycores
+ * @copyright Copyright (c) 2017 Paycores
+ * @license   http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+ *
+ * https://paycores.com
  */
 
 require_once(_PS_MODULE_DIR_ . '/paycores/controllers/front/paycores_version.php');
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
-class Paycores extends PaymentModule {
+class Paycores extends PaymentModule
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->name = 'paycores';
         $this->tab = 'payments_gateways';
         $this->version = "1.0.1";
@@ -71,7 +76,8 @@ class Paycores extends PaymentModule {
      * @access public
      * @return bool
      */
-    public function install() {
+    public function install()
+    {
         $order_success = new OrderState();
         $order_success->name = array_fill(0, 10, $this->l('Payment approved by Paycores'));
         $order_success->send_email = 1;
@@ -139,7 +145,8 @@ class Paycores extends PaymentModule {
      * @access public
      * @return bool
      */
-    public function uninstall() {
+    public function uninstall()
+    {
         $order_success = new OrderState(Configuration::get('PAYCORES_SUCCESS'));
         $order_pending = new OrderState(Configuration::get('PAYCORES_PENDING'));
         $order_denied = new OrderState(Configuration::get('PAYCORES_DENIED'));
@@ -161,7 +168,8 @@ class Paycores extends PaymentModule {
      *
      * @access private
      */
-    private function postValidation() {
+    private function postValidation()
+    {
         if (Tools::isSubmit('btnSubmit')) {
             if (!Tools::getValue('PAYCORES_API_KEY')) {
                 $this->postErrors[] = $this->l('API Key is required.');
@@ -182,12 +190,18 @@ class Paycores extends PaymentModule {
      *
      * @access private
      */
-    private function postProcess() {
+    private function postProcess()
+    {
+        $apiKey = "PAYCORES_API_KEY";
+        $apiLogin = "PAYCORES_API_LOGIN";
+        $CommerceId = "PAYCORES_COMMERCE_ID";
+        $TestMode = "PAYCORES_TEST_MODE";
+
         if (Tools::isSubmit('btnSubmit')) {
-            Configuration::updateValue('PAYCORES_API_KEY', $this->stripString(Tools::getValue('PAYCORES_API_KEY')));
-            Configuration::updateValue('PAYCORES_API_LOGIN', $this->stripString(Tools::getValue('PAYCORES_API_LOGIN')));
-            Configuration::updateValue('PAYCORES_COMMERCE_ID', $this->stripString(Tools::getValue('PAYCORES_COMMERCE_ID')));
-            Configuration::updateValue('PAYCORES_TEST_MODE', Tools::getValue('PAYCORES_TEST_MODE'));
+            Configuration::updateValue($apiKey, $this->strCores(Tools::getValue($apiKey)));
+            Configuration::updateValue($apiLogin, $this->strCores(Tools::getValue($apiLogin)));
+            Configuration::updateValue($CommerceId, $this->strCores(Tools::getValue($CommerceId)));
+            Configuration::updateValue($TestMode, Tools::getValue($TestMode));
         }
 
         $this->html .= $this->displayConfirmation($this->l('Settings updated'));
@@ -199,7 +213,8 @@ class Paycores extends PaymentModule {
      * @access private
      * @return mixed
      */
-    private function displayPaycores() {
+    private function displayPaycores()
+    {
         return $this->display(__FILE__, 'paycores_contact.tpl');
     }
 
@@ -210,7 +225,8 @@ class Paycores extends PaymentModule {
      * @access public
      * @return string
      */
-    public function getContent() {
+    public function getContent()
+    {
         if (Tools::isSubmit('btnSubmit')) {
             $this->postValidation();
             if (!count($this->postErrors)) {
@@ -237,7 +253,8 @@ class Paycores extends PaymentModule {
      * @access public
      * @param $params
      */
-    public function hookPayment($params) {
+    public function hookPayment($params)
+    {
         if (!$this->active) {
             return;
         }
@@ -263,7 +280,8 @@ class Paycores extends PaymentModule {
      * @param $params
      * @return array|void
      */
-    public function hookPaymentOptions($params) {
+    public function hookPaymentOptions($params)
+    {
         if (!$this->active) {
             return;
         }
@@ -274,7 +292,7 @@ class Paycores extends PaymentModule {
 
         $paycoresOption = new PaymentOption();
         $paycoresOption->setCallToActionText($this->l(''))
-            ->setLogo(Media::getMediaPath(_PS_MODULE_DIR_ .$this->name.'/views/templates/img/paycores_small.png'))
+            ->setLogo(Media::getMediaPath(_PS_MODULE_DIR_ .$this->name.'/views/img/paycores_small.png'))
             ->setModuleName($this->name)
             ->setAction($this->context->link->getModuleLink($this->name, 'redirect', array(), true))
             ->setAdditionalInformation($this->fetch('module:'.$this->name.'/views/templates/hook/paycores_intro.tpl'));
@@ -289,7 +307,8 @@ class Paycores extends PaymentModule {
      * @param $cart
      * @return bool
      */
-    public function checkCurrency($cart) {
+    public function checkCurrency($cart)
+    {
         $currency_order = new Currency($cart->id_currency);
         $currencies_module = $this->getCurrency($cart->id_currency);
 
@@ -311,7 +330,8 @@ class Paycores extends PaymentModule {
      * @access public
      * @return mixed
      */
-    public function renderForm() {
+    public function renderForm()
+    {
         $PAYCORES_CLASS = "";
         $fields_form = array(
             'form' => array(
@@ -403,17 +423,18 @@ class Paycores extends PaymentModule {
      * @access public
      * @return array
      */
-    public function getConfigFieldsValues() {
+    public function getConfigFieldsValues()
+    {
         return array(
-            'PAYCORES_API_LOGIN' => $this->stripString(Tools::getValue(
+            'PAYCORES_API_LOGIN' => $this->strCores(Tools::getValue(
                 'PAYCORES_API_LOGIN',
                 Configuration::get('PAYCORES_API_LOGIN')
             )),
-            'PAYCORES_API_KEY' => $this->stripString(Tools::getValue(
+            'PAYCORES_API_KEY' => $this->strCores(Tools::getValue(
                 'PAYCORES_API_KEY',
                 Configuration::get('PAYCORES_API_KEY')
             )),
-            'PAYCORES_COMMERCE_ID' => $this->stripString(Tools::getValue(
+            'PAYCORES_COMMERCE_ID' => $this->strCores(Tools::getValue(
                 'PAYCORES_COMMERCE_ID',
                 Configuration::get('PAYCORES_COMMERCE_ID')
             )),
@@ -424,7 +445,8 @@ class Paycores extends PaymentModule {
         );
     }
 
-    private function stripString($item) {
+    private function strCores($item)
+    {
         return preg_replace('/\s+/', '', $item);
     }
 }

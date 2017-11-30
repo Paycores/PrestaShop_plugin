@@ -1,19 +1,24 @@
 <?php
 /**
- * Created by Paycores.com.
- * User: paycores-02
- * Date: 15/11/17
- * Time: 09:56 AM
+ * Paycores
+ *
+ * @author    Paycores
+ * @copyright Copyright (c) 2017 Paycores
+ * @license   http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+ *
+ * https://paycores.com
  */
 
-class PaycoresRedirectModuleFrontController extends ModuleFrontController {
+class PaycoresRedirectModuleFrontController extends ModuleFrontController
+{
 
     /**
      * Recibe peticion post
      *
      * @access public
      */
-    public function postProcess(){
+    public function postProcess()
+    {
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
@@ -41,7 +46,8 @@ class PaycoresRedirectModuleFrontController extends ModuleFrontController {
      *
      * @access public
      */
-    public function initContent() {
+    public function initContent()
+    {
         parent::initContent();
 
         $cart = $this->context->cart;
@@ -56,10 +62,10 @@ class PaycoresRedirectModuleFrontController extends ModuleFrontController {
         $paycoresAmount = (float)number_format($cart->getOrderTotal(true, Cart::BOTH), 2, '.', '');
         $paycoresDecimal = explode(".", $paycoresAmount);
 
-        if(count($paycoresDecimal) > 1){
-            if(strlen($paycoresDecimal[1]) < 2){
+        if (count($paycoresDecimal) > 1) {
+            if (Tools::strlen($paycoresDecimal[1]) < 2) {
                 $paycoresAmount = $paycoresAmount."0";
-            } else if(strlen($paycoresDecimal[1]) < 1){
+            } elseif (Tools::strlen($paycoresDecimal[1]) < 1) {
                 $paycoresAmount = $paycoresAmount."00";
             }
         } else {
@@ -83,11 +89,11 @@ class PaycoresRedirectModuleFrontController extends ModuleFrontController {
         $paycoresDescription = join($description, ', ');
         $usrAddress = $paycoresAddress->address1 . " ". $paycoresAddress->address2;
 
-        if(Configuration::get('PAYCORES_TEST_MODE') == '1' ){
+        if (Configuration::get('PAYCORES_TEST_MODE') == '1') {
             $paycoresUrl = 'https://sandbox.paycores.com/web-checkout/';
-        } elseif (Configuration::get('PAYCORES_TEST_MODE') == '2' ){
+        } elseif (Configuration::get('PAYCORES_TEST_MODE') == '2') {
             $paycoresUrl = 'https://business.paycores.com/web-checkout/';
-        } else{
+        } else {
             $paycoresUrl = null;
         }
 
@@ -106,17 +112,21 @@ class PaycoresRedirectModuleFrontController extends ModuleFrontController {
             $paycores.'_usr_email'          => $customer->email,
             $paycores.'_usr_phone'          => $paycoresAddress->phone,
             $paycores.'_usr_cellphone'      => $paycoresAddress->phone,
-            $paycores.'_usr_address'        => substr($usrAddress, 0, 40).(strlen($usrAddress)>40 ? '...' : ""),
+            $paycores.'_usr_address'        => Tools::substr($usrAddress, 0, 40).
+                (Tools::strlen($usrAddress)>40 ? '...' : ""),
             $paycores.'_usr_city'           => $paycoresAddress->city,
             $paycores.'_usr_country_ad'     => $paycoresCountry->iso_code,
             $paycores.'_usr_nation'         => $paycoresCountry->iso_code,
             $paycores.'_usr_postal_code'    => $paycoresAddress->postcode,
-            $paycores.'_description'        => substr($paycoresDescription, 0, 25).(strlen($paycoresDescription)>25 ? '...' : ""),
-            $paycores.'_gd_name'            => substr($paycoresDescription, 0, 16).(strlen($paycoresDescription)>16 ? '...' : ""),
-            $paycores.'_gd_descript'        => substr($paycoresDescription, 0, 16).(strlen($paycoresDescription)>16 ? '...' : ""),
+            $paycores.'_description'        => Tools::substr($paycoresDescription, 0, 25).
+                (Tools::strlen($paycoresDescription)>25 ? '...' : ""),
+            $paycores.'_gd_name'            => Tools::substr($paycoresDescription, 0, 16).
+                (Tools::strlen($paycoresDescription)>16 ? '...' : ""),
+            $paycores.'_gd_descript'        => Tools::substr($paycoresDescription, 0, 16).
+                (Tools::strlen($paycoresDescription)>16 ? '...' : ""),
             $paycores.'_gd_quantity'        => count($cart->getProducts()),
-            $paycores.'_gd_item'            => intval($paycoresAmount),
-            $paycores.'_gd_code'            => intval($paycoresAmount),
+            $paycores.'_gd_item'            => (int)$paycoresAmount,
+            $paycores.'_gd_code'            => (int)$paycoresAmount,
             $paycores.'_gd_amount'          => $paycoresAmount,
             $paycores.'_gd_unitPrice'       => $paycoresAmount,
             $paycores.'_tax'                => "0.00",

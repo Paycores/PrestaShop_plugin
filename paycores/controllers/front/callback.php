@@ -1,12 +1,16 @@
 <?php
 /**
- * Created by Paycores.com.
- * User: paycores-02
- * Date: 15/11/17
- * Time: 09:56 AM
+ * Paycores
+ *
+ * @author    Paycores
+ * @copyright Copyright (c) 2017 Paycores
+ * @license   http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+ *
+ * https://paycores.com
  */
 
-class PaycoresCallbackModuleFrontController extends ModuleFrontController {
+class PaycoresCallbackModuleFrontController extends ModuleFrontController
+{
 
     private $paycoresID = 0;
     private $codeResponse = "";
@@ -17,11 +21,11 @@ class PaycoresCallbackModuleFrontController extends ModuleFrontController {
      *
      * @access public
      */
-    public function postProcess() {
+    public function postProcess()
+    {
         $this->paycoresID = (int)Tools::getValue('paycores_order_id');
         $this->codeResponse = Tools::getValue('codeResponse');
         $this->paycoresMessage = Tools::getValue('message');
-        return;
     }
 
     /**
@@ -30,7 +34,8 @@ class PaycoresCallbackModuleFrontController extends ModuleFrontController {
      *
      * @access public
      */
-    public function initContent() {
+    public function initContent()
+    {
         parent::initContent();
 
         $link = new Link();
@@ -74,8 +79,11 @@ class PaycoresCallbackModuleFrontController extends ModuleFrontController {
                     $paycoresData
                 );
 
-                $this->PaycoresError($this->paycoresMessage, $this->paycoresID);
-                _PS_VERSION_ >= '1.7' ? $this->setTemplate('module:paycores/views/templates/front/paycores_callback.tpl') : $this->setTemplate('paycores_callback.tpl');
+                $this->paycoresError($this->paycoresMessage, $this->paycoresID);
+                _PS_VERSION_ >= '1.7' ?
+                    $this->setTemplate('module:paycores/views/templates/front/paycores_callback.tpl')
+                    :
+                    $this->setTemplate('paycores_callback.tpl');
                 break;
         }
     }
@@ -87,7 +95,8 @@ class PaycoresCallbackModuleFrontController extends ModuleFrontController {
      * @param $message
      * @param $order_id
      */
-    private function PaycoresError($message, $order_id) {
+    private function paycoresError($message, $order_id)
+    {
         PrestaShopLogger::addLog($message, 3, null, 'Cart', $order_id, true);
     }
 }
